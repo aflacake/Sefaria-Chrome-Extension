@@ -5,13 +5,12 @@ import { domain } from './const'
 const dataApi = {
   DISABLE_CACHE: false,
   init: (cb) => {
-    chrome.storage.local.get(['tab', 'lastCleared', 'cachedCalendarDay', 'calendars', 'language'] , data => {
+    chrome.storage.local.get(['tab', 'lastCleared', 'cachedCalendarDay', 'calendars', 'language'], data => {
       const now = new Date();
 
-
-      if (!data.cachedCalendarDay && data.cached) {
-        dataApi.saveToLocal({cachedCalendarDay: (new Date()).toDateString()})
-      } else if (now.toDateString() !== data.cachedCalendarDay) {
+      if (!data.cachedCalendarDay) {  // If there's no cached day recorded
+        dataApi.saveToLocal({cachedCalendarDay: now.toDateString()});
+      } else if (now.toDateString() !== data.cachedCalendarDay) {  // If it's a new day
         chrome.storage.local.remove('calendars');
         data.calendars = null; // this datum is too old
         dataApi.saveToLocal({cachedCalendarDay: now.toDateString()});
@@ -19,7 +18,6 @@ const dataApi = {
 
       cb(data);
     });
-
   },
   _currentRequest: null,
   _currentRequestName: null,
