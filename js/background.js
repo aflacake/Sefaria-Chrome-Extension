@@ -1,5 +1,4 @@
-//based on https://developer.chrome.com/extensions/event_pages
-//and https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/docs/examples/extensions/gmail/background.js
+//Originally based on https://developer.chrome.com/extensions/event_pages, now migrated to https://developer.chrome.com/docs/extensions/develop/concepts/service-workers
 
 import dataApi from './dataApi';
 
