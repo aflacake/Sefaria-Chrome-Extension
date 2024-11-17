@@ -18,18 +18,16 @@ function startRequest() {
 }
 
 function requestAllCalendars(calendars) {
-  for (let c of calendars) {
-    dataApi.getCalendarTextRecursive([c], 0, {}, onGetCalendarText);
+  for (let calendar of calendars) {
+    dataApi.getCalendarTextRecursive([calendar], 0, {}, onGetCalendarText);
   }
 }
 
 function onGetCalendarText(text, responseURL, initScrollPos, fromCache) {
-  const siteUrl = responseURL.map(tempURL=>dataApi.api2siteUrl(tempURL));
+  const siteUrls = responseURL.map(dataApi.api2siteUrl);
   for (let i = 0; i < fromCache.length; i++) {
-    const tempFromCache = fromCache[i];
-    if (!tempFromCache) {
-      console.log("caching", siteUrl[i]);
-      dataApi.saveToLocal({[siteUrl[i]]: { text: text[i], responseURL: responseURL[i], }});
+    if (!fromCache[i]) {
+      dataApi.saveToLocal({ [siteUrls[i]]: { text: text[i], responseURL: responseURL[i] } });
     }
   }
 }
