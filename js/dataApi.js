@@ -83,7 +83,7 @@ const dataApi = {
         //console.log(calendar, "NOT from cache");
         const controller = new AbortController();
         const signal = controller.signal;
-        var responseURL;
+        let responseURL;
         fetch(url, {method: 'GET', signal})
         .then(response => {
           responseURL = response.url;
@@ -104,8 +104,7 @@ const dataApi = {
   getRandomSource: cb => {
     const controller = new AbortController();
     const signal = controller.signal;
-    var responseURL;
-    var topic;
+    let responseURL, topic;
     fetch(`${domain}/api/texts/random-by-topic`, {method: 'GET', signal})
       .then(dataApi._handle_response)
       .then(data => {
@@ -191,11 +190,11 @@ const dataApi = {
       return n;
     }
 
-    var values = dataApi.hebrewNumerals;
+    const values = dataApi.hebrewNumerals;
 
-    var heb = "";
+    let heb = "";
     if (n >= 100) {
-      var hundreds = n - (n % 100);
+      let hundreds = n - (n % 100);
       heb += values[hundreds];
       n -= hundreds;
     }
@@ -204,7 +203,7 @@ const dataApi = {
       heb += values[n];
     } else {
       if (n >= 10) {
-        var tens = n - (n % 10);
+        let tens = n - (n % 10);
         heb += values[tens];
         n -= tens;
       }
@@ -218,11 +217,10 @@ const dataApi = {
 
     return heb;
   },
-  encodeHebrewDaf: (daf, form) => {
+  encodeHebrewDaf: (daf, form = "short") => {
     // Ruturns Hebrew daf strings from "32b"
-    var form = form || "short"
-    var n = parseInt(daf.slice(0,-1));
-    var a = daf.slice(-1);
+    let n = parseInt(daf.slice(0,-1));
+    let a = daf.slice(-1);
     if (form === "short") {
       a = {a: ".", b: ":"}[a];
       return dataApi.encodeHebrewNumeral(n) + a;
