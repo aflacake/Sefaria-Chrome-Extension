@@ -302,34 +302,30 @@ const dataApi = {
     1100: "\u05EA\u05EA\u05E9",
     1200: "\u05EA\u05EA\u05EA"
   },
-  saveToLocal: (obj, cb, _i=0) => {
-    if (_i > 5) {
-      console.error("Trying too many times to save", obj);
-      return;
-    }
-    chrome.storage.local.set(obj, dataApi._saveToLocalCB.bind(null, obj, cb, _i))
+  saveToLocal: async (obj, cb, _i = 0) => {
+      if (_i > 5) {
+          console.error("Trying too many times to save", obj);
+          return;
+      }
+      try {
+          await chrome.storage.local.set(obj);
+          if (cb) cb();
+      } catch (error) {
+          await dataApi.clearLocal();
+          await dataApi.saveToLocal(obj, cb, _i + 1);
+      }
   },
-  _saveToLocalCB: (obj, cb, _i) => {
-    if (chrome.runtime.lastError) {
-      dataApi.clearLocal(() => {
-        dataApi.saveToLocal(obj, cb, _i + 1);
-      });
-    } else {
-      if (cb) cb();
-    }
-  },
-  clearLocal: () => {
-    // clear the main portion of local storage while retaining user preferences
-    const importantValues = {
-      "cachedCalendarDay": null,
-      "language": DEFAULT_STATE.language,
-      "tab": DEFAULT_STATE.tab,
-    };
-    chrome.storage.local.get(importantValues, data => {
-      chrome.storage.local.clear(() => {
-        chrome.storage.local.set(data);
-      });
-    });
+
+  clearLocal: async () => {
+      // clear the main portion of local storage while retaining user preferences
+      const importantValues = {
+          "cachedCalendarDay": null,
+          "language": DEFAULT_STATE.language,
+          "tab": DEFAULT_STATE.tab,
+      };
+      const data = await chrome.storage.local.get(importantValues);
+      await chrome.storage.local.clear();
+      await chrome.storage.local.set(data);
   }
 }
 
