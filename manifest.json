@@ -26,7 +26,8 @@
     "default_title": "TorahTab by Sefaria"
   },
   "background": {
-    "service_worker": "bundle/background-bundle.js"
+    "service_worker": "bundle/background-bundle.js",
+    "scripts": ["bundle/background-bundle.js"]
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
