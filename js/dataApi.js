@@ -1,4 +1,3 @@
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import { REDUX_ACTIONS, store, DEFAULT_STATE } from './ReduxStore';
 import { domain } from './const'
 
