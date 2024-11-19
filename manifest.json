@@ -35,10 +35,5 @@
   "permissions": [
     "storage",
     "alarms"
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "X@Y"
-    }
-  }
+  ]
 }
